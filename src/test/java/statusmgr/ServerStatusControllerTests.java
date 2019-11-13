@@ -51,4 +51,49 @@ public class ServerStatusControllerTests {
                 .andExpect(jsonPath("$.contentHeader").value("Server Status requested by RebYid"));
     }
 
+    @Test
+    public void operationDetail() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "operations"))
+                .andDo(print())
+                .andExpect(jsonPath("$.contentHeader")
+                        .value("Server Status requested by Anonymous"))
+                .andExpect(jsonPath("$.statusDesc")
+                        .value("Server is up, and is operating normally"));
+    }
+
+    @Test
+    public void testAllDetailParamsAndName() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "memory","operations", "extensions").param("name", "joey"))
+                .andDo(print())
+                .andExpect(jsonPath("$.contentHeader")
+                        .value("Server Status requested by Joey"))
+                .andExpect(jsonPath("$.statusDesc")
+                        .value("Server is up, and its memory is Running low, " +
+                                "and is operating normally, " +
+                                "and is using these extensions - [Hypervisor, Kubernetes, RAID-6]"));
+    }
+
+    @Test
+    public void testAllDetailParamsAndDuplicate() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "memory","operations", "extensions", "memory"))
+                .andDo(print())
+                .andExpect(jsonPath("$.contentHeader")
+                        .value("Server Status requested by Anonymous"))
+                .andExpect(jsonPath("$.statusDesc")
+                        .value("Server is up, and its memory is Running low, " +
+                                "and is operating normally, " +
+                                "and is using these extensions - [Hypervisor, Kubernetes, RAID-6], " +
+                                "and its memory is Running low"));
+    }
+
+    @Test
+    public void wrongValueForDetailParam() throws Exception {
+        this.mockMvc.perform(get("/server/status/detailed").param("details", "memory", "operations", "junkERROR"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Invalid details option: junkERROR"));
+
+
+    }
+
 }

@@ -3,10 +3,9 @@ package statusmgr;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import statusmgr.beans.ServerStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller for all web/REST requests about the status of servers
@@ -34,11 +33,19 @@ public class StatusController {
     protected final AtomicLong counter = new AtomicLong();
 
     @RequestMapping("/status")
-    public ServerStatus messageToUser(@RequestParam(value="name", defaultValue="Anonymous"  ) String name,
-                                      @RequestParam( value = "details", required = false) List<String> details) {
+    public ServerStatus GetServerStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name,
+                                        @RequestParam(value = "details", required = false) List<String> details) {
         System.out.println("*** DEBUG INFO ***" + details);
 
         return new ServerStatus(counter.incrementAndGet(),
-                            String.format(template, name));
+                String.format(template, name));
+    }
+
+    @RequestMapping("/status/detailed")
+    public ServerStatus GetDetailedServerStatus(@RequestParam(value = "details") List<String> details,
+                                                             @RequestParam(value = "name", defaultValue = "Anonymous") String name) {
+
+        return new ServerStatus(counter.incrementAndGet(),
+                String.format(template, name), details);
     }
 }
