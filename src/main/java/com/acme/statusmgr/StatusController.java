@@ -1,11 +1,10 @@
-package statusmgr;
+package com.acme.statusmgr;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import statusmgr.beans.ServerStatus;
+import com.acme.statusmgr.beans.ServerStatus;
 
 /**
  * Controller for all web/REST requests about the status of servers

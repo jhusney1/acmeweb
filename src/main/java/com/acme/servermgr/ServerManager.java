@@ -1,6 +1,6 @@
-package servermgr;
+package com.acme.servermgr;
 
-import statusmgr.AbstractStatus;
+import com.acme.statusmgr.AbstractStatus;
 
 /**
  * Manage all servers (service providers) being tracked by the Acme server tracking system

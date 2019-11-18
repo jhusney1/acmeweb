@@ -1,4 +1,4 @@
-package statusmgr;
+package com.acme.statusmgr;
 
 public class MemoryDetailDecorator extends DetailedStatusControllerDecorator {
     public MemoryDetailDecorator(AbstractStatus detailedStatusControllerToBeDecorated) {
