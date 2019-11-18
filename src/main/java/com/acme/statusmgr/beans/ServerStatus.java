@@ -1,7 +1,7 @@
-package statusmgr.beans;
+package com.acme.statusmgr.beans;
 
-import servermgr.ServerManager;
-import statusmgr.*;
+import com.acme.servermgr.ServerManager;
+import com.acme.statusmgr.*;
 
 import java.util.List;
 

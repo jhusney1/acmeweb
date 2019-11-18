@@ -1,4 +1,4 @@
-package statusmgr;
+package com.acme.statusmgr;
 
 public class ExtentionsDetailDecorator extends DetailedStatusControllerDecorator {
     public ExtentionsDetailDecorator(AbstractStatus detailedStatusControllerToBeDecorated) {
