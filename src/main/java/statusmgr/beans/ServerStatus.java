@@ -1,6 +1,9 @@
 package statusmgr.beans;
 
 import servermgr.ServerManager;
+import statusmgr.*;
+
+import java.util.List;
 
 /**
  * A POJO that represents Server Status and can be used to generate JSON for that status
@@ -10,6 +13,9 @@ public class ServerStatus {
     private  long id;
     private String contentHeader;
     private String statusDesc = "Unknown";
+
+    private ServerManager serverManager = new ServerManager();
+
 
     /**
      * Construct a ServerStatus using info passed in for identification, and obtaining current
@@ -23,7 +29,23 @@ public class ServerStatus {
         this.contentHeader = contentHeader;
 
         // Obtain current status of server
-        this.statusDesc = ServerManager.getCurrentServerStatus();
+        this.statusDesc = serverManager.getCurrentServerStatus();
+    }
+    public ServerStatus(long id, String contentHeader, List<String> details) throws BadRequestException {
+        this.id = id;
+        this.contentHeader = contentHeader;
+
+        AbstractStatus detailedStatusControllerDecorator = new ServerManager();
+        for(String s : details) {
+            if(s.equals("operations"))
+                detailedStatusControllerDecorator = new OperationsDetailDecorator(detailedStatusControllerDecorator);
+            else if(s.equals("extensions"))
+                detailedStatusControllerDecorator = new ExtentionsDetailDecorator(detailedStatusControllerDecorator);
+            else if(s.equals("memory"))
+                detailedStatusControllerDecorator = new MemoryDetailDecorator(detailedStatusControllerDecorator);
+            else throw new BadRequestException("invalid details option:" + s);
+        }
+        this.statusDesc = detailedStatusControllerDecorator.getCurrentServerStatus();
     }
 
     public ServerStatus() {
