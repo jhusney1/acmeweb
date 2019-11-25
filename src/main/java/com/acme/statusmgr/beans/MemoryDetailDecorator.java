@@ -1,4 +1,6 @@
-package com.acme.statusmgr;
+package com.acme.statusmgr.beans;
+
+import com.acme.servermgr.ServerManager;
 
 public class MemoryDetailDecorator extends DetailedStatusControllerDecorator {
     public MemoryDetailDecorator(AbstractStatus detailedStatusControllerToBeDecorated) {
@@ -7,6 +9,6 @@ public class MemoryDetailDecorator extends DetailedStatusControllerDecorator {
 
     @Override
     public String getCurrentServerStatus() {
-        return super.getCurrentServerStatus() + ", and its memory is Running low";
+        return super.getCurrentServerStatus() + ", " + ServerManager.getMemoryStatus();
     }
 }
