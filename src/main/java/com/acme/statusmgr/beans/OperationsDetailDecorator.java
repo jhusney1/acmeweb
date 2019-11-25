@@ -1,4 +1,6 @@
-package com.acme.statusmgr;
+package com.acme.statusmgr.beans;
+
+import com.acme.servermgr.ServerManager;
 
 public class OperationsDetailDecorator extends DetailedStatusControllerDecorator {
     public OperationsDetailDecorator(AbstractStatus detailedStatusControllerToBeDecorated) {
@@ -7,7 +9,7 @@ public class OperationsDetailDecorator extends DetailedStatusControllerDecorator
 
     @Override
     public String getCurrentServerStatus() {
-        return super.getCurrentServerStatus() + ", and is operating normally";
+        return super.getCurrentServerStatus() + ", " + ServerManager.getOperationsStatus();
     }
 }
 
