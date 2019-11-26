@@ -1,4 +1,4 @@
-package com.acme.statusmgr;
+package com.acme.statusmgr.beans;
 
 public abstract class DetailedStatusControllerDecorator implements AbstractStatus {
 

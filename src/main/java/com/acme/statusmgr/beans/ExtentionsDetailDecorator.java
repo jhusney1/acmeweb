@@ -1,4 +1,6 @@
-package com.acme.statusmgr;
+package com.acme.statusmgr.beans;
+
+import com.acme.servermgr.ServerManager;
 
 public class ExtentionsDetailDecorator extends DetailedStatusControllerDecorator {
     public ExtentionsDetailDecorator(AbstractStatus detailedStatusControllerToBeDecorated) {
@@ -7,6 +9,6 @@ public class ExtentionsDetailDecorator extends DetailedStatusControllerDecorator
 
     @Override
     public String getCurrentServerStatus() {
-        return super.getCurrentServerStatus() + ", and is using these extensions - [Hypervisor, Kubernetes, RAID-6]";
+        return super.getCurrentServerStatus() + ", " + ServerManager.getExtensionsStatus();
     }
 }

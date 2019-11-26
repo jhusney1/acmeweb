@@ -1,6 +1,6 @@
 package com.acme.servermgr;
 
-import com.acme.statusmgr.AbstractStatus;
+import com.acme.statusmgr.beans.AbstractStatus;
 
 /**
  * Manage all servers (service providers) being tracked by the Acme server tracking system
@@ -15,6 +15,16 @@ public class ServerManager implements AbstractStatus {
     @Override
     public String getCurrentServerStatus() {
         return "Server is up";
+    }
+
+    public static String getMemoryStatus() {
+        return "and its memory is Running low";
+    }
+    public static String getOperationsStatus() {
+        return "and is operating normally";
+    }
+    public static String getExtensionsStatus() {
+        return "and is using these extensions - [Hypervisor, Kubernetes, RAID-6]";
     }
 
     /**
