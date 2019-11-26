@@ -66,7 +66,7 @@ public class ServerStatusControllerTests {
         this.mockMvc.perform(get("/server/status/detailed").param("details", "memory","operations", "extensions").param("name", "joey"))
                 .andDo(print())
                 .andExpect(jsonPath("$.contentHeader")
-                        .value("Server Status requested by Joey"))
+                        .value("Server Status requested by joey"))
                 .andExpect(jsonPath("$.statusDesc")
                         .value("Server is up, and its memory is Running low, " +
                                 "and is operating normally, " +
@@ -92,8 +92,6 @@ public class ServerStatusControllerTests {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Invalid details option: junkERROR"));
-
-
     }
 
 }
