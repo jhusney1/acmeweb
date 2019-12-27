@@ -2,13 +2,11 @@ package com.acme.statusmgr.beans;
 
 import com.acme.Application;
 import com.acme.servermgr.ServerManager;
-import org.apache.catalina.Server;
 
-public class OperationsDetailDecorator extends DetailedStatusControllerDecorator {
+public class ExtensionsDetailDecorator extends DetailedStatusControllerDecorator {
 
     ServerManager serverManager;
-    public OperationsDetailDecorator(AbstractStatus detailedStatusControllerToBeDecorated) {
-
+    public ExtensionsDetailDecorator(AbstractStatus detailedStatusControllerToBeDecorated) {
         super(detailedStatusControllerToBeDecorated);
         serverManager = (ServerManager) Application.getApplicationContext().getBean("serverManager");
 
@@ -16,7 +14,6 @@ public class OperationsDetailDecorator extends DetailedStatusControllerDecorator
 
     @Override
     public String getCurrentServerStatus() {
-        return super.getCurrentServerStatus() + ", " + serverManager.getOperationsStatus();
+        return super.getCurrentServerStatus() + ", " + serverManager.getExtensionsStatus();
     }
 }
-

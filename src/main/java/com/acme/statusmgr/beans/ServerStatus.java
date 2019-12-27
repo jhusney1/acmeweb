@@ -1,5 +1,6 @@
 package com.acme.statusmgr.beans;
 
+import com.acme.Application;
 import com.acme.servermgr.ServerManager;
 import com.acme.statusmgr.*;
 
@@ -14,7 +15,7 @@ public class ServerStatus {
     private String contentHeader;
     private String statusDesc = "Unknown";
 
-    private ServerManager serverManager = new ServerManager();
+    private ServerManager serverManager;
 
 
     /**
@@ -28,19 +29,19 @@ public class ServerStatus {
         this.id = id;
         this.contentHeader = contentHeader;
 
-        // Obtain current status of server
-        this.statusDesc = serverManager.getCurrentServerStatus();
+        // Obtain and save reference to the ServerManager
+        serverManager = (ServerManager) Application.getApplicationContext().getBean("serverManager");
     }
     public ServerStatus(long id, String contentHeader, List<String> details) throws BadRequestException {
         this.id = id;
         this.contentHeader = contentHeader;
 
-        AbstractStatus detailedStatusControllerDecorator = new ServerManager();
+        AbstractStatus detailedStatusControllerDecorator = serverManager;
         for(String s : details) {
             if(s.equals("operations"))
                 detailedStatusControllerDecorator = new OperationsDetailDecorator(detailedStatusControllerDecorator);
             else if(s.equals("extensions"))
-                detailedStatusControllerDecorator = new ExtentionsDetailDecorator(detailedStatusControllerDecorator);
+                detailedStatusControllerDecorator = new ExtensionsDetailDecorator(detailedStatusControllerDecorator);
             else if(s.equals("memory"))
                 detailedStatusControllerDecorator = new MemoryDetailDecorator(detailedStatusControllerDecorator);
             else throw new BadRequestException("invalid details option:" + s);
@@ -63,7 +64,7 @@ public class ServerStatus {
 
 
     public String getStatusDesc() {
-        return statusDesc;
+        return serverManager.getCurrentServerStatus();
     }
 
 
