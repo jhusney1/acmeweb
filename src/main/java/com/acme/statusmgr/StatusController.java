@@ -3,6 +3,7 @@ package com.acme.statusmgr;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 import com.acme.statusmgr.beans.ServerStatus;
 
