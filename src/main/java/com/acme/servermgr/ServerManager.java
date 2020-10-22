@@ -1,6 +1,5 @@
 package com.acme.servermgr;
 
-import com.acme.statusmgr.beans.AbstractStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class ServerManager implements AbstractStatus {
+public class ServerManager {
 
     /**
      * Reference to a class that knows how to get details about what we are interested in on a server

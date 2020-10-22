@@ -11,10 +11,11 @@ import java.util.List;
  */
 public class ServerStatus {
 
-    private  long id;
-    private String contentHeader;
-    private String statusDesc = "Unknown";
+    long id;
+    String contentHeader;
+    String statusDesc = "Unknown";
 
+    //AbstractStatusControllerDecorator detailedStatusControllerDecorator;
     private ServerManager serverManager;
 
 
@@ -22,31 +23,28 @@ public class ServerStatus {
      * Construct a ServerStatus using info passed in for identification, and obtaining current
      * server status from the appropriate Manager class.
      *
-     * @param id                a numeric identifier/counter of which request this
-     * @param contentHeader     info about the request
+     * @param id            a numeric identifier/counter of which request this
+     * @param contentHeader info about the request
      */
     public ServerStatus(long id, String contentHeader) {
+
         this.id = id;
         this.contentHeader = contentHeader;
 
-        // Obtain and save reference to the ServerManager
+
+        //Obtain and save reference to the ServerManager
         serverManager = (ServerManager) Application.getApplicationContext().getBean("serverManager");
+        this.statusDesc = serverManager.getCurrentServerStatus();
+
     }
+
     public ServerStatus(long id, String contentHeader, List<String> details) throws BadRequestException {
+
+        serverManager = (ServerManager) Application.getApplicationContext().getBean("serverManager");
+
         this.id = id;
         this.contentHeader = contentHeader;
-
-        AbstractStatus detailedStatusControllerDecorator = serverManager;
-        for(String s : details) {
-            if(s.equals("operations"))
-                detailedStatusControllerDecorator = new OperationsDetailDecorator(detailedStatusControllerDecorator);
-            else if(s.equals("extensions"))
-                detailedStatusControllerDecorator = new ExtensionsDetailDecorator(detailedStatusControllerDecorator);
-            else if(s.equals("memory"))
-                detailedStatusControllerDecorator = new MemoryDetailDecorator(detailedStatusControllerDecorator);
-            else throw new BadRequestException("invalid details option:" + s);
-        }
-        this.statusDesc = detailedStatusControllerDecorator.getCurrentServerStatus();
+        this.statusDesc = serverManager.getCurrentServerStatus();
     }
 
     public ServerStatus() {
@@ -62,10 +60,7 @@ public class ServerStatus {
         return contentHeader;
     }
 
-
     public String getStatusDesc() {
-        return serverManager.getCurrentServerStatus();
+        return statusDesc;
     }
-
-
 }
