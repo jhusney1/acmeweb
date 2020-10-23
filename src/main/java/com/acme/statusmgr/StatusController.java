@@ -3,12 +3,8 @@ package com.acme.statusmgr;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.acme.statusmgr.beans.ExtensionsDecorator;
-import com.acme.statusmgr.beans.MemoryDecorator;
-import com.acme.statusmgr.beans.OperationsDecorator;
-import org.springframework.context.ApplicationContext;
+import com.acme.statusmgr.beans.*;
 import org.springframework.web.bind.annotation.*;
-import com.acme.statusmgr.beans.ServerStatus;
 
 /**
  * Controller for all web/REST requests about the status of servers
@@ -59,5 +55,15 @@ public class StatusController {
         }
         return decoratedServerStatus;
     }
+
+    @RequestMapping("/disk/status")
+    public DiskStatus getHardriveInfo(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
+
+        DiskStatus ds = new DiskStatus(counter.incrementAndGet(), String.format(template, name));
+        ds.checkDisk();
+        return ds;
+
+    }
+
 
 }
