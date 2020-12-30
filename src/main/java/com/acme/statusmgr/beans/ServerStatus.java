@@ -13,7 +13,12 @@ public class ServerStatus {
 
     long id;
     String contentHeader;
+
+
+
     String statusDesc = "Unknown";
+
+
 
     //AbstractStatusControllerDecorator detailedStatusControllerDecorator;
     private ServerManager serverManager;
@@ -60,7 +65,15 @@ public class ServerStatus {
         return contentHeader;
     }
 
+    public String obtainStatusDesc() {
+        return statusDesc;
+    }
+
     public String getStatusDesc() {
         return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
     }
 }

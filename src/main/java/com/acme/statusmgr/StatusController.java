@@ -5,6 +5,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.acme.statusmgr.beans.*;
 import org.springframework.web.bind.annotation.*;
+import com.acme.statusmgr.executors.SimpleExecutor;
+import com.acme.statusmgr.commands.*;
 
 /**
  * Controller for all web/REST requests about the status of servers
@@ -29,12 +31,16 @@ public class StatusController {
     protected final AtomicLong counter = new AtomicLong();
 
     @RequestMapping("/status")
-    public ServerStatus GetServerStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name,
+    public ServerStatus getServerStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name,
                                         @RequestParam(value = "details", required = false) List<String> details) {
-        System.out.println("*** DEBUG INFO ***" + details);
+//        System.out.println("*** DEBUG INFO ***" + details);
 
-        return new ServerStatus(counter.incrementAndGet(),
-                String.format(template, name));
+//        return new ServerStatus(counter.incrementAndGet(),
+//                String.format(template, name));
+        BasicServerStatusCmd cmd = new BasicServerStatusCmd(counter.incrementAndGet(), template, name);
+        SimpleExecutor exc = new SimpleExecutor(cmd);
+        exc.handleImmediately();
+        return cmd.getResult();
     }
 
     @RequestMapping("/status/detailed")
@@ -42,22 +48,27 @@ public class StatusController {
                                                 @RequestParam(value = "name", defaultValue = "Anonymous") String name) {
 
 
-        ServerStatus decoratedServerStatus = new ServerStatus(counter.incrementAndGet(), String.format(template, name), details);
+//        ServerStatus decoratedServerStatus = new ServerStatus(counter.incrementAndGet(), String.format(template, name), details);
+//////
+//////        for (String s : details) {
+//////            if (s.equals("operations")) {
+//////                decoratedServerStatus = new OperationsDecorator(decoratedServerStatus);
+//////            } else if (s.equals("extensions")) {
+//////                decoratedServerStatus = new ExtensionsDecorator(decoratedServerStatus);
+//////            } else if (s.equals("memory")) {
+//////                decoratedServerStatus = new MemoryDecorator(decoratedServerStatus);
+//////            } else throw new BadRequestException("invalid details option:" + s);
+//////        }
+//////        return decoratedServerStatus;
 
-        for (String s : details) {
-            if (s.equals("operations")) {
-                decoratedServerStatus = new OperationsDecorator(decoratedServerStatus);
-            } else if (s.equals("extensions")) {
-                decoratedServerStatus = new ExtensionsDecorator(decoratedServerStatus);
-            } else if (s.equals("memory")) {
-                decoratedServerStatus = new MemoryDecorator(decoratedServerStatus);
-            } else throw new BadRequestException("invalid details option:" + s);
-        }
-        return decoratedServerStatus;
+        DetailedServerStatusCmd cmd = new DetailedServerStatusCmd(counter.incrementAndGet(), template, name, details);
+        SimpleExecutor exc = new SimpleExecutor(cmd);
+        exc.handleImmediately();
+        return cmd.getResult();
     }
 
     @RequestMapping("/disk/status")
-    public DiskStatus getHardriveInfo(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
+    public DiskStatus getHardDriveInfo(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
 
         DiskStatus ds = new DiskStatus(counter.incrementAndGet(), String.format(template, name));
         ds.checkDisk();

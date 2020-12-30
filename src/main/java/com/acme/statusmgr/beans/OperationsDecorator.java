@@ -15,8 +15,8 @@ public class OperationsDecorator extends AbstractStatusControllerDecorator {
     }
 
     @Override
-    public String getStatusDesc() {
-        return super.serverStatusToBeDecorated.getStatusDesc() + ", " + serverManager.getOperationsStatus();
+    public String obtainStatusDesc() {
+        return super.serverStatusToBeDecorated.obtainStatusDesc() + ", " + serverManager.getOperationsStatus();
     }
 }
 
