@@ -30,36 +30,33 @@ public class StatusController {
     protected static final String template = "Server Status requested by %s";
     protected final AtomicLong counter = new AtomicLong();
 
+    /**
+     * Used to retrieve basic information such as name and string about system info
+     * @param name
+     * @param details
+     * @return
+     */
     @RequestMapping("/status")
     public ServerStatus getServerStatus(@RequestParam(value = "name", defaultValue = "Anonymous") String name,
                                         @RequestParam(value = "details", required = false) List<String> details) {
-//        System.out.println("*** DEBUG INFO ***" + details);
 
-//        return new ServerStatus(counter.incrementAndGet(),
-//                String.format(template, name));
         BasicServerStatusCmd cmd = new BasicServerStatusCmd(counter.incrementAndGet(), template, name);
         SimpleExecutor exc = new SimpleExecutor(cmd);
         exc.handleImmediately();
         return cmd.getResult();
     }
 
+    /**
+     * Method called to obtain basic information such as the name of requestor, and some strings about
+     * pc details
+     * @param details
+     * @param name
+     * @return
+     */
     @RequestMapping("/status/detailed")
     public ServerStatus GetDetailedServerStatus(@RequestParam(value = "details") List<String> details,
                                                 @RequestParam(value = "name", defaultValue = "Anonymous") String name) {
 
-
-//        ServerStatus decoratedServerStatus = new ServerStatus(counter.incrementAndGet(), String.format(template, name), details);
-//////
-//////        for (String s : details) {
-//////            if (s.equals("operations")) {
-//////                decoratedServerStatus = new OperationsDecorator(decoratedServerStatus);
-//////            } else if (s.equals("extensions")) {
-//////                decoratedServerStatus = new ExtensionsDecorator(decoratedServerStatus);
-//////            } else if (s.equals("memory")) {
-//////                decoratedServerStatus = new MemoryDecorator(decoratedServerStatus);
-//////            } else throw new BadRequestException("invalid details option:" + s);
-//////        }
-//////        return decoratedServerStatus;
 
         DetailedServerStatusCmd cmd = new DetailedServerStatusCmd(counter.incrementAndGet(), template, name, details);
         SimpleExecutor exc = new SimpleExecutor(cmd);
@@ -67,6 +64,11 @@ public class StatusController {
         return cmd.getResult();
     }
 
+    /**
+     * Used to obtain infomation about the hard drive
+     * @param name
+     * @return
+     */
     @RequestMapping("/disk/status")
     public DiskStatus getHardDriveInfo(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
 

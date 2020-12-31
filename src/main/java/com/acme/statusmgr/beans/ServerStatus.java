@@ -13,15 +13,9 @@ public class ServerStatus {
 
     long id;
     String contentHeader;
-
-
-
     String statusDesc = "Unknown";
-
-
-
-    //AbstractStatusControllerDecorator detailedStatusControllerDecorator;
     private ServerManager serverManager;
+
 
 
     /**
@@ -65,14 +59,26 @@ public class ServerStatus {
         return contentHeader;
     }
 
+    /**
+     * Used to retrieve current status description and modify it with decorators etc
+     * @return
+     */
     public String obtainStatusDesc() {
         return statusDesc;
     }
 
+    /**
+     * Spring calls to retrieve string after already created and stored by setStatusDesc
+     * @return
+     */
     public String getStatusDesc() {
         return statusDesc;
     }
 
+    /**
+     * Sets statusDesc before spring gets to it. This allows the executor to do the heavy lifting
+     * @param statusDesc
+     */
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
     }
