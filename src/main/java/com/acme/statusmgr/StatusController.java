@@ -65,16 +65,20 @@ public class StatusController {
     }
 
     /**
-     * Used to obtain infomation about the hard drive
+     * Used to obtain information about the hard drive
      * @param name
      * @return
      */
     @RequestMapping("/disk/status")
     public DiskStatus getHardDriveInfo(@RequestParam(value = "name", defaultValue = "Anonymous") String name) {
 
-        DiskStatus ds = new DiskStatus(counter.incrementAndGet(), String.format(template, name));
-        ds.checkDisk();
-        return ds;
+        DiskStatusCmd cmd = new DiskStatusCmd(counter.incrementAndGet(), template, name);
+        SimpleExecutor exc = new SimpleExecutor(cmd);
+        exc.handleImmediately();
+        return cmd.getResult();
+//        DiskStatus ds = new DiskStatus(counter.incrementAndGet(), String.format(template, name));
+//        ds.checkDisk();
+//        return ds;
 
     }
 
