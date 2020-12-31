@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 public class DiskStatus {
     long id;
     String contentHeader;
-    //String diskCommand = "chkdsk c:";
     String diskCommandOutput;
 
     public DiskStatus(long id, String contentHeader) {

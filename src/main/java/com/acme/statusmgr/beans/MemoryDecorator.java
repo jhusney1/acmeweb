@@ -14,7 +14,7 @@ public class MemoryDecorator extends AbstractStatusControllerDecorator {
     }
 
     @Override
-    public String getStatusDesc() {
-        return super.serverStatusToBeDecorated.getStatusDesc() + ", " + serverManager.getMemoryStatus();
+    public String obtainStatusDesc() {
+        return super.serverStatusToBeDecorated.obtainStatusDesc() + ", " + serverManager.getMemoryStatus();
     }
 }

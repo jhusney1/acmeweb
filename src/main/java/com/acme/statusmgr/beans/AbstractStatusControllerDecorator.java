@@ -16,5 +16,5 @@ public abstract class AbstractStatusControllerDecorator extends ServerStatus {
     }
 
 
-    abstract public String getStatusDesc();
+    abstract public String obtainStatusDesc();
 }
